@@ -244,7 +244,7 @@ public class ArticleDetailFragment extends Fragment implements
                         @Override
                         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                             if (bitmap != null) {
-                                Palette p = Palette.generate(bitmap, 12);
+                                Palette p = Palette.from(bitmap).generate();
                                 mMutedColor = p.getDarkMutedColor(0xFF333333);
                                 mPhotoView.setImageBitmap(bitmap);
                                 mRootView.findViewById(R.id.meta_bar).setBackgroundColor(mMutedColor);
