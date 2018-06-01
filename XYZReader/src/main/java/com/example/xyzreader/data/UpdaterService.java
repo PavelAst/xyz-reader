@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.RemoteException;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.format.Time;
 import android.util.Log;
 
@@ -21,7 +22,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class UpdaterService extends IntentService {
-    private static final String TAG = "UpdaterService";
+
+    private static final String TAG = "@@@UpdaterService";
 
     public static final String BROADCAST_ACTION_STATE_CHANGE
             = "com.example.xyzreader.intent.action.STATE_CHANGE";
@@ -43,8 +45,10 @@ public class UpdaterService extends IntentService {
             return;
         }
 
-        sendStickyBroadcast(
-                new Intent(BROADCAST_ACTION_STATE_CHANGE).putExtra(EXTRA_REFRESHING, true));
+        Intent messageIntent = new Intent(BROADCAST_ACTION_STATE_CHANGE);
+        messageIntent.putExtra(EXTRA_REFRESHING, true);
+        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(getApplicationContext());
+        manager.sendBroadcast(messageIntent);
 
         // Don't even inspect the intent, we only do one thing, and that's fetch content.
         ArrayList<ContentProviderOperation> cpo = new ArrayList<>();
@@ -57,19 +61,19 @@ public class UpdaterService extends IntentService {
         try {
             JSONArray array = RemoteEndpointUtil.fetchJsonArray();
             if (array == null) {
-                throw new JSONException("Invalid parsed item array" );
+                throw new JSONException("Invalid parsed item array");
             }
 
             for (int i = 0; i < array.length(); i++) {
                 ContentValues values = new ContentValues();
                 JSONObject object = array.getJSONObject(i);
-                values.put(ItemsContract.Items.SERVER_ID, object.getString("id" ));
-                values.put(ItemsContract.Items.AUTHOR, object.getString("author" ));
-                values.put(ItemsContract.Items.TITLE, object.getString("title" ));
-                values.put(ItemsContract.Items.BODY, object.getString("body" ));
-                values.put(ItemsContract.Items.THUMB_URL, object.getString("thumb" ));
-                values.put(ItemsContract.Items.PHOTO_URL, object.getString("photo" ));
-                values.put(ItemsContract.Items.ASPECT_RATIO, object.getString("aspect_ratio" ));
+                values.put(ItemsContract.Items.SERVER_ID, object.getString("id"));
+                values.put(ItemsContract.Items.AUTHOR, object.getString("author"));
+                values.put(ItemsContract.Items.TITLE, object.getString("title"));
+                values.put(ItemsContract.Items.BODY, object.getString("body"));
+                values.put(ItemsContract.Items.THUMB_URL, object.getString("thumb"));
+                values.put(ItemsContract.Items.PHOTO_URL, object.getString("photo"));
+                values.put(ItemsContract.Items.ASPECT_RATIO, object.getString("aspect_ratio"));
                 values.put(ItemsContract.Items.PUBLISHED_DATE, object.getString("published_date"));
                 cpo.add(ContentProviderOperation.newInsert(dirUri).withValues(values).build());
             }
@@ -77,10 +81,10 @@ public class UpdaterService extends IntentService {
             getContentResolver().applyBatch(ItemsContract.CONTENT_AUTHORITY, cpo);
 
         } catch (JSONException | RemoteException | OperationApplicationException e) {
-            Log.e(TAG, "Error updating content.", e);
+
         }
 
-        sendStickyBroadcast(
-                new Intent(BROADCAST_ACTION_STATE_CHANGE).putExtra(EXTRA_REFRESHING, false));
+        messageIntent.putExtra(EXTRA_REFRESHING, false);
+        manager.sendBroadcast(messageIntent);
     }
 }
