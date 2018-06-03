@@ -1,14 +1,11 @@
 package com.example.xyzreader.ui;
 
 
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.graphics.Palette;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -19,12 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.xyzreader.R;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,7 +35,6 @@ public class ArticleDetailFragment extends Fragment {
     private static final String TAG = "ArticleDetailFragment";
     private static final int MAX_LENGTH_TEXT = 1000;
 
-    public static final String ARG_IMAGE_URL = "item_image_url";
     public static final String ARG_TITLE = "item_title";
     public static final String ARG_AUTHOR = "item_author";
     public static final String ARG_DATE = "item_date";
@@ -53,13 +46,11 @@ public class ArticleDetailFragment extends Fragment {
     private int mMutedColor = 0xFF333333;
     private ColorDrawable mStatusBarColorDrawable;
 
-    private String mImageUrl;
     private String mTitle;
     private String mAuthor;
     private String mDate;
     private String mText;
 
-    private ImageView mPhotoView;
     private Button mShowMoreButton;
 
     private boolean mIsCard = false;
@@ -82,10 +73,9 @@ public class ArticleDetailFragment extends Fragment {
     }
 
     // ArticleDetailFragment.newInstance(imageUrl, title, author, date, text);
-    public static ArticleDetailFragment newInstance(String imageUrl, String title,
-                                                       String author, String date, String text) {
+    public static ArticleDetailFragment newInstance(String title, String author,
+                                                    String date, String text) {
         Bundle arguments = new Bundle();
-        arguments.putString(ARG_IMAGE_URL, imageUrl);
         arguments.putString(ARG_TITLE, title);
         arguments.putString(ARG_AUTHOR, author);
         arguments.putString(ARG_DATE, date);
@@ -99,7 +89,6 @@ public class ArticleDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mImageUrl = getArguments().getString(ARG_IMAGE_URL);
         mTitle = getArguments().getString(ARG_TITLE);
         mAuthor = getArguments().getString(ARG_AUTHOR);
         mDate = getArguments().getString(ARG_DATE);
@@ -116,7 +105,6 @@ public class ArticleDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
 
-        mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
         mShowMoreButton = mRootView.findViewById(R.id.btn_show_more);
 
         mStatusBarColorDrawable = new ColorDrawable(0);
@@ -174,42 +162,16 @@ public class ArticleDetailFragment extends Fragment {
                     if (!isFullText) {
                         String newString = TextUtils.join("<br />", mText.split("(\r\n\r\n|\n\n)"));
                         mTextBodyTV.setText(fromHtml(newString));
-                        mShowMoreButton.setText("SHOW LESS");
+                        mShowMoreButton.setText(R.string.show_less);
                         isFullText = true;
                     } else {
                         mTextBodyTV.setText(fromHtml(getPartOfText(mText)));
-                        mShowMoreButton.setText("SHOW MORE");
+                        mShowMoreButton.setText(R.string.show_more);
                         isFullText = false;
                     }
                 }
             });
         }
-
-        Picasso.get()
-                .load(mImageUrl)
-                .placeholder(R.color.photo_placeholder)
-                .into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        if (bitmap != null) {
-                            Palette p = Palette.from(bitmap).generate();
-                            mMutedColor = p.getDarkMutedColor(0xFF333333);
-                            mPhotoView.setImageBitmap(bitmap);
-//                                mRootView.findViewById(R.id.meta_bar).setBackgroundColor(mMutedColor);
-//                                updateStatusBar();
-                        }
-                    }
-
-                    @Override
-                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-                        mPhotoView.setImageResource(R.color.photo_placeholder);
-                    }
-
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                    }
-                });
 
     }
 
@@ -240,7 +202,7 @@ public class ArticleDetailFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (!isVisibleToUser && isFullText) {
             mTextBodyTV.setText(fromHtml(getPartOfText(mText)));
-            mShowMoreButton.setText("SHOW MORE");
+            mShowMoreButton.setText(R.string.show_more);
             isFullText = false;
         }
     }

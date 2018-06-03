@@ -14,12 +14,15 @@ import android.support.v4.app.ShareCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.ItemsContract;
+import com.squareup.picasso.Picasso;
 
 /**
  * An activity representing a single Article detail screen, letting you swipe between articles.
@@ -34,6 +37,7 @@ public class ArticleDetailActivity extends AppCompatActivity
 
     private ViewPager mPager;
     private MyPagerAdapter mPagerAdapter;
+    private ImageView backDropIV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,13 @@ public class ArticleDetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_article_detail);
 
         getSupportLoaderManager().initLoader(0, null, this);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        backDropIV = findViewById(R.id.iv_backdropUp);
 
         mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         mPager = findViewById(R.id.pager);
@@ -60,6 +71,7 @@ public class ArticleDetailActivity extends AppCompatActivity
             public void onPageSelected(int position) {
                 if (mCursor != null) {
                     mCursor.moveToPosition(position);
+                    showBackdropImage();
                 }
                 mSelectedItemId = mCursor.getLong(ArticleLoader.Query._ID);
             }
@@ -119,6 +131,8 @@ public class ArticleDetailActivity extends AppCompatActivity
                 mCursor.moveToNext();
             }
             mStartId = 0;
+
+            showBackdropImage();
         }
     }
 
@@ -126,6 +140,13 @@ public class ArticleDetailActivity extends AppCompatActivity
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
         mCursor = null;
         mPagerAdapter.notifyDataSetChanged();
+    }
+
+    private void showBackdropImage() {
+        String imageUrl = mCursor.getString(ArticleLoader.Query.PHOTO_URL);
+        Picasso.get()
+                .load(imageUrl)
+                .into(backDropIV);
     }
 
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
@@ -136,12 +157,11 @@ public class ArticleDetailActivity extends AppCompatActivity
         @Override
         public Fragment getItem(int position) {
             mCursor.moveToPosition(position);
-            String imageUrl = mCursor.getString(ArticleLoader.Query.PHOTO_URL);
             String title = mCursor.getString(ArticleLoader.Query.TITLE);
             String author = mCursor.getString(ArticleLoader.Query.AUTHOR);
             String date = mCursor.getString(ArticleLoader.Query.PUBLISHED_DATE);
             String text = mCursor.getString(ArticleLoader.Query.BODY);
-            return ArticleDetailFragment.newInstance(imageUrl, title, author, date, text);
+            return ArticleDetailFragment.newInstance(title, author, date, text);
         }
 
         @Override
