@@ -159,14 +159,15 @@ public class ArticleDetailFragment extends Fragment {
             mShowMoreButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    mShowMoreButton.setText(R.string.loading_label);
                     if (!isFullText) {
                         String newString = TextUtils.join("<br />", mText.split("(\r\n\r\n|\n\n)"));
                         mTextBodyTV.setText(fromHtml(newString));
-                        mShowMoreButton.setText(R.string.show_less);
+                        mShowMoreButton.setText(R.string.show_less_label);
                         isFullText = true;
                     } else {
                         mTextBodyTV.setText(fromHtml(getPartOfText(mText)));
-                        mShowMoreButton.setText(R.string.show_more);
+                        mShowMoreButton.setText(R.string.show_more_label);
                         isFullText = false;
                     }
                 }
@@ -202,7 +203,7 @@ public class ArticleDetailFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (!isVisibleToUser && isFullText) {
             mTextBodyTV.setText(fromHtml(getPartOfText(mText)));
-            mShowMoreButton.setText(R.string.show_more);
+            mShowMoreButton.setText(R.string.show_more_label);
             isFullText = false;
         }
     }

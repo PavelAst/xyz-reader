@@ -8,8 +8,9 @@
     <string name="action_share">Share</string>
 
     <string name="up">Up</string>
-    <string name="show_less">SHOW LESS</string>
-    <string name="show_more">SHOW MORE</string>
+    <string name="show_less_label">SHOW LESS</string>
+    <string name="show_more_label">SHOW MORE</string>
+    <string name="loading_label">LOADING…</string>
     <string name="by_text">by</string>
 
 </resources>

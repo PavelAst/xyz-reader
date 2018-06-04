@@ -56,7 +56,7 @@
         <Button
             android:id="@+id/btn_show_more"
             style="@style/buttonStyle"
-            android:text="@string/show_more"
+            android:text="@string/show_more_label"
             android:visibility="gone" />
 
     </LinearLayout>

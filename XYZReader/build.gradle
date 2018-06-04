@@ -37,4 +37,5 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'jp.wasabeef:recyclerview-animators:2.3.0'
 }
