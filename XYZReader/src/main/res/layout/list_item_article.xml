@@ -15,11 +15,10 @@
         android:background="#FFF">
 
         <ImageView
-            android:id="@+id/thumbnail"
+            android:id="@+id/iv_thumbnail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            tools:src="@drawable/secondvariety" />
+            android:adjustViewBounds="true" />
 
         <TextView
             android:id="@+id/article_title"
@@ -35,7 +34,7 @@
             android:textStyle="bold"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/thumbnail"
+            card_view:layout_constraintTop_toBottomOf="@+id/iv_thumbnail"
             tools:text="Ebooks, Neither E, Nor Books" />
 
         <TextView

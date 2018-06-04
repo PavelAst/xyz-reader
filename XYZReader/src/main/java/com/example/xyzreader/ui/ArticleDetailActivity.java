@@ -54,7 +54,7 @@ public class ArticleDetailActivity extends AppCompatActivity
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        backDropIV = findViewById(R.id.iv_backdropUp);
+        backDropIV = findViewById(R.id.iv_thumbnail);
 
         mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         mPager = findViewById(R.id.pager);

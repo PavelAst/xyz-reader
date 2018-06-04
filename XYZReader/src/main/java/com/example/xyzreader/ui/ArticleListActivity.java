@@ -1,5 +1,6 @@
 package com.example.xyzreader.ui;
 
+import android.app.ActivityOptions;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -35,8 +36,6 @@ import java.util.GregorianCalendar;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import jp.wasabeef.recyclerview.adapters.SlideInRightAnimationAdapter;
 
 /**
  * An activity representing a list of Articles. This activity has different presentations for
@@ -153,11 +152,21 @@ public class ArticleListActivity extends AppCompatActivity implements
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = getLayoutInflater().inflate(R.layout.list_item_article, parent, false);
             final ViewHolder vh = new ViewHolder(view);
+            final ImageView sharedImage = view.findViewById(R.id.iv_thumbnail);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))));
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition())));
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(
+                                ArticleListActivity.this,
+                                sharedImage,
+                                "sharedImage");
+                        startActivity(intent, options.toBundle());
+                    } else {
+                        startActivity(intent);
+                    }
                 }
             });
             return vh;
@@ -213,7 +222,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         public ViewHolder(View view) {
             super(view);
-            thumbnailView = view.findViewById(R.id.thumbnail);
+            thumbnailView = view.findViewById(R.id.iv_thumbnail);
             mTitleTextView = (TextView) view.findViewById(R.id.article_title);
             mDateTextView = (TextView) view.findViewById(R.id.article_date);
             mAuthorTextView = (TextView) view.findViewById(R.id.article_author);
