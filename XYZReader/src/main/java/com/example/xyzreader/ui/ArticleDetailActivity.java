@@ -30,6 +30,8 @@ import com.squareup.picasso.Picasso;
 public class ArticleDetailActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static final String KEY_IMAGE_URL = "image_url";
+
     private Cursor mCursor;
     private long mStartId;
 
@@ -71,7 +73,8 @@ public class ArticleDetailActivity extends AppCompatActivity
             public void onPageSelected(int position) {
                 if (mCursor != null) {
                     mCursor.moveToPosition(position);
-                    showBackdropImage();
+                    String imageUrl = mCursor.getString(ArticleLoader.Query.PHOTO_URL);
+                    showBackdropImage(imageUrl);
                 }
                 mSelectedItemId = mCursor.getLong(ArticleLoader.Query._ID);
             }
@@ -105,6 +108,9 @@ public class ArticleDetailActivity extends AppCompatActivity
                 mStartId = ItemsContract.Items.getItemId(getIntent().getData());
                 mSelectedItemId = mStartId;
             }
+        } else {
+            String imageUrl = savedInstanceState.getString(KEY_IMAGE_URL);
+            showBackdropImage(imageUrl);
         }
     }
 
@@ -132,7 +138,8 @@ public class ArticleDetailActivity extends AppCompatActivity
             }
             mStartId = 0;
 
-            showBackdropImage();
+            String imageUrl = mCursor.getString(ArticleLoader.Query.PHOTO_URL);
+            showBackdropImage(imageUrl);
         }
     }
 
@@ -142,8 +149,13 @@ public class ArticleDetailActivity extends AppCompatActivity
         mPagerAdapter.notifyDataSetChanged();
     }
 
-    private void showBackdropImage() {
-        String imageUrl = mCursor.getString(ArticleLoader.Query.PHOTO_URL);
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(KEY_IMAGE_URL, mCursor.getString(ArticleLoader.Query.PHOTO_URL));
+    }
+
+    private void showBackdropImage(String imageUrl) {
         Picasso.get()
                 .load(imageUrl)
                 .into(backDropIV);
