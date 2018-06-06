@@ -188,6 +188,11 @@ public class ArticleDetailFragment extends Fragment {
     private String getPartOfText(String bigText) {
         int string_num = 12;
         int index = bigText.indexOf("\r\n");
+
+        if (index == -1) {
+            return bigText.substring(0, MAX_LENGTH_TEXT) + "...";
+        }
+        
         int count = 0;
         while (index != -1 && count < string_num) {
             int nextIndex = bigText.indexOf("\r\n", index + 4);

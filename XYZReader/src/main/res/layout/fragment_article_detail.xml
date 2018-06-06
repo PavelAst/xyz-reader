@@ -49,7 +49,6 @@
             android:paddingBottom="16dp"
             android:paddingTop="16dp"
             android:textColor="@color/primary_text"
-            android:textColorLink="@color/colorAccent"
             android:textSize="@dimen/detail_body_text_size"
             tools:text="When Amazon kicked off, many writers got their knickers\r\nin a tight and powerful knot at the idea that axe-grinding yahoos\r\nwere filling the Amazon message-boards with ill-considered slams\r\nat their work" />
 

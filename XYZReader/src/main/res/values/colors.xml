@@ -19,9 +19,9 @@
     <color name="photo_placeholder">#ccc</color>
     <color name="ltgray">#ffe0e0e0</color>
 
-    <color name="colorPrimary">#04561A</color>
-    <color name="colorPrimaryDark">#034013</color>
-    <color name="colorAccent">#ba7104</color>
+    <color name="colorPrimary">#00695c</color>
+    <color name="colorPrimaryDark">#003d33</color>
+    <color name="colorAccent">#ff6d00</color>
 
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
