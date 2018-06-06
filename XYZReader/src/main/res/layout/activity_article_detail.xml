@@ -54,6 +54,8 @@
         android:layout_height="56dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_share" />
+        android:src="@drawable/ic_share"
+        app:borderWidth="0dp"
+        app:elevation="@dimen/fab_elevation" />
 
 </android.support.design.widget.CoordinatorLayout>

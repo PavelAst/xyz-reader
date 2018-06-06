@@ -5,12 +5,13 @@
     <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
 
     <dimen name="app_bar_height">260dp</dimen>
-    <dimen name="fab_elevation">2dp</dimen>
+    <dimen name="fab_elevation">6dp</dimen>
     <dimen name="fab_press_translation_z">6dp</dimen>
     <dimen name="fab_margin">24dp</dimen>
 
     <dimen name="between_objects_margin">8dp</dimen>
     <dimen name="card_corner_radius">2dp</dimen>
+    <dimen name="card_elevation">1dp</dimen>
     <dimen name="row_padding">4dp</dimen>
 
     <dimen name="article_horizontal_padding">16dp</dimen>
